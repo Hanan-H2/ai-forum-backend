@@ -24,8 +24,8 @@ export const globalErrorHandler = (err, req, res, next) => {
     errorResponse.message = "Malformed JSON payload in request body.";
   }
 
-  // Log error stack in development environment
-  if (process.env.NODE_ENV !== "production") {
+  // Keep production 5xx details in server logs without exposing them to clients.
+  if (process.env.NODE_ENV !== "production" || errorResponse.statusCode >= 500) {
     console.error(" Internal Error Details:", err);
   }
 
